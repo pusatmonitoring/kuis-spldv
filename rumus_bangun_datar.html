@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rumus Bangun Datar</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue-50: #E6F1FB; --blue-600: #185FA5; --blue-800: #0C447C;
+    --teal-50: #E1F5EE; --teal-600: #0F6E56; --teal-800: #085041;
+    --amber-50: #FAEEDA; --amber-600: #BA7517; --amber-800: #633806;
+    --coral-50: #FAECE7; --coral-600: #993C1D; --coral-800: #712B13;
+    --purple-50: #EEEDFE; --purple-600: #534AB7; --purple-800: #3C3489;
+    --green-50: #EAF3DE; --green-600: #3B6D11; --green-800: #27500A;
+    --pink-50: #FBEAF0; --pink-600: #993556; --pink-800: #72243E;
+    --red-50: #FCEBEB; --red-600: #A32D2D; --red-800: #791F1F;
+    --gray: #5F5E5A;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f5f3ee;
+    min-height: 100vh;
+    padding: 40px 20px 60px;
+    color: #2c2c2a;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    color: #1a1a18;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+
+  header p {
+    font-size: 0.95rem;
+    color: var(--gray);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1.5px solid #e5e3dc;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+
+  .card:hover {
+    box-shadow: 0 8px 28px rgba(0,0,0,0.09);
+    transform: translateY(-2px);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: #1a1a18;
+  }
+
+  .shape-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 110px;
+  }
+
+  .formula-block {
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .formula-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .formula-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .formula-val {
+    font-size: 1.05rem;
+    font-weight: 500;
+    font-family: 'Playfair Display', serif;
+  }
+
+  .divider {
+    height: 1px;
+    opacity: 0.25;
+    margin: 2px 0;
+  }
+
+  .info-text {
+    font-size: 0.78rem;
+    color: var(--gray);
+    text-align: center;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 48px;
+    font-size: 0.82rem;
+    color: #9c9a91;
+  }
+
+  /* Color themes per card */
+  .blue .badge { background: var(--blue-50); color: var(--blue-800); }
+  .blue .formula-block { background: var(--blue-50); }
+  .blue .formula-label { color: var(--blue-600); }
+  .blue .formula-val { color: var(--blue-800); }
+  .blue .divider { background: var(--blue-600); }
+
+  .teal .badge { background: var(--teal-50); color: var(--teal-800); }
+  .teal .formula-block { background: var(--teal-50); }
+  .teal .formula-label { color: var(--teal-600); }
+  .teal .formula-val { color: var(--teal-800); }
+  .teal .divider { background: var(--teal-600); }
+
+  .amber .badge { background: var(--amber-50); color: var(--amber-800); }
+  .amber .formula-block { background: var(--amber-50); }
+  .amber .formula-label { color: var(--amber-600); }
+  .amber .formula-val { color: var(--amber-800); }
+  .amber .divider { background: var(--amber-600); }
+
+  .coral .badge { background: var(--coral-50); color: var(--coral-800); }
+  .coral .formula-block { background: var(--coral-50); }
+  .coral .formula-label { color: var(--coral-600); }
+  .coral .formula-val { color: var(--coral-800); }
+  .coral .divider { background: var(--coral-600); }
+
+  .purple .badge { background: var(--purple-50); color: var(--purple-800); }
+  .purple .formula-block { background: var(--purple-50); }
+  .purple .formula-label { color: var(--purple-600); }
+  .purple .formula-val { color: var(--purple-800); }
+  .purple .divider { background: var(--purple-600); }
+
+  .green .badge { background: var(--green-50); color: var(--green-800); }
+  .green .formula-block { background: var(--green-50); }
+  .green .formula-label { color: var(--green-600); }
+  .green .formula-val { color: var(--green-800); }
+  .green .divider { background: var(--green-600); }
+
+  .pink .badge { background: var(--pink-50); color: var(--pink-800); }
+  .pink .formula-block { background: var(--pink-50); }
+  .pink .formula-label { color: var(--pink-600); }
+  .pink .formula-val { color: var(--pink-800); }
+  .pink .divider { background: var(--pink-600); }
+
+  .red .badge { background: var(--red-50); color: var(--red-800); }
+  .red .formula-block { background: var(--red-50); }
+  .red .formula-label { color: var(--red-600); }
+  .red .formula-val { color: var(--red-800); }
+  .red .divider { background: var(--red-600); }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    .card { break-inside: avoid; box-shadow: none !important; transform: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Rumus Bangun Datar</h1>
+  <p>Matematika Dasar &mdash; Luas &amp; Keliling</p>
+</header>
+
+<div class="grid">
+
+  <!-- PERSEGI -->
+  <div class="card blue">
+    <div class="card-header">
+      <span class="badge">Segi Empat</span>
+    </div>
+    <div class="card-title">Persegi</div>
+    <div class="shape-area">
+      <svg width="90" height="90" viewBox="0 0 90 90">
+        <rect x="5" y="5" width="80" height="80" rx="4" fill="none" stroke="#185FA5" stroke-width="2"/>
+        <text x="45" y="-3" text-anchor="middle" font-size="12" fill="#0C447C" font-family="DM Sans">s</text>
+        <text x="-3" y="50" text-anchor="middle" font-size="12" fill="#0C447C" font-family="DM Sans">s</text>
+        <line x1="5" y1="0" x2="85" y2="0" stroke="#185FA5" stroke-width="1" stroke-dasharray="3 2"/>
+        <line x1="0" y1="5" x2="0" y2="85" stroke="#185FA5" stroke-width="1" stroke-dasharray="3 2"/>
+      </svg>
+    </div>
+    <div class="formula-block">
+      <div class="formula-row">
+        <span class="formula-label">Luas</span>
+        <span class="formula-val">L = s × s = s²</span>
+      </div>
+      <div class="divider"></div>
+      <div class="formula-row">
+        <span class="formula-label">Keliling</span>
+        <span class="formula-val">K = 4 × s</span>
+      </div>
+    </div>
+    <div class="info-text">s = sisi</div>
+  </div>
+
+  <!-- PERSEGI PANJANG -->
+  <div class="card teal">
+    <div class="card-header">
+      <span class="badge">Segi Empat</span>
+    </div>
+    <div class="card-title">Persegi Panjang</div>
+    <div class="shape-area">
+      <svg width="130" height="85" viewBox="0 0 130 85">
+        <rect x="5" y="10" width="120" height="65" rx="4" fill="none" stroke="#0F6E56" stroke-width="2"/>
+        <text x="65" y="7" text-anchor="middle" font-size="12" fill="#085041" font-family="DM Sans">p</text>
+        <text x="2" y="46" text-anchor="end" font-size="12" fill="#085041" font-family="DM Sans">l</text>
+        <line x1="5" y1="4" x2="125" y2="4" stroke="#0F6E56" stroke-width="1" stroke-dasharray="3 2"/>
+        <line x1="2" y1="10" x2="2" y2="75" stroke="#0F6E56" stroke-width="1" stroke-dasharray="3 2"/>
+      </svg>
+    </div>
+    <div class="formula-block">
+      <div class="formula-row">
+        <span class="formula-label">Luas</span>
+        <span class="formula-val">L = p × l</span>
+      </div>
+      <div class="divider"></div>
+      <div class="formula-row">
+        <span class="formula-label">Keliling</span>
+        <span class="formula-val">K = 2 × (p + l)</span>
+      </div>
+    </div>
+    <div class="info-text">p = panjang &nbsp;|&nbsp; l = lebar</div>
+  </div>
+
+  <!-- SEGITIGA -->
+  <div class="card amber">
+    <div class="card-header">
+      <span class="badge">Tiga Sisi</span>
+    </div>
+    <div class="card-title">Segitiga</div>
+    <div class="shape-area">
+      <svg width="110" height="100" viewBox="0 0 110 100">
+        <polygon points="55,5 5,95 105,95" fill="none" stroke="#BA7517" stroke-width="2"/>
+        <line x1="55" y1="5" x2="55" y2="95" stroke="#BA7517" stroke-width="1.2" stroke-dasharray="4 2"/>
+        <rect x="55" y="87" width="7" height="7" fill="none" stroke="#BA7517" stroke-width="1"/>
+        <text x="62" y="55" font-size="12" fill="#633806" font-family="DM Sans">t</text>
+        <text x="55" y="106" text-anchor="middle" font-size="12" fill="#633806" font-family="DM Sans">a</text>
+      </svg>
+    </div>
+    <div class="formula-block">
+      <div class="formula-row">
+        <span class="formula-label">Luas</span>
+        <span class="formula-val">L = ½ × a × t</span>
+      </div>
+      <div class="divider"></div>
+      <div class="formula-row">
+        <span class="formula-label">Keliling</span>
+        <span class="formula-val">K = a + b + c</span>
+      </div>
+    </div>
+    <div class="info-text">a = alas &nbsp;|&nbsp; t = tinggi &nbsp;|&nbsp; a,b,c = ketiga sisi</div>
+  </div>
+
+  <!-- LINGKARAN -->
+  <div class="card coral">
+    <div class="card-header">
+      <span class="badge">Kurva Tertutup</span>
+    </div>
+    <div class="card-title">Lingkaran</div>
+    <div class="shape-area">
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="44" fill="none" stroke="#993C1D" stroke-width="2"/>
+        <circle cx="50" cy="50" r="3" fill="#993C1D"/>
+        <line x1="50" y1="50" x2="94" y2="50" stroke="#993C1D" stroke-width="1.5" stroke-dasharray="4 2"/>
+        <text x="72" y="45" text-anchor="middle" font-size="13" fill="#712B13" font-family="DM Sans">r</text>
+      </svg>
+    </div>
+    <div class="formula-block">
+      <div class="formula-row">
+        <span class="formula-label">Luas</span>
+        <span class="formula-val">L = π × r²</span>
+      </div>
+      <div class="divider"></div>
+      <div class="formula-row">
+        <span class="formula-label">Keliling</span>
+        <span class="formula-val">K = 2 × π × r</span>
+      </div>
+    </div>
+    <div class="info-text">r = jari-jari &nbsp;|&nbsp; π ≈ 3,14 atau 22/7</div>
+  </div>
+
+  <!-- TRAPESIUM -->
+  <div class="card purple">
+    <div class="card-header">
+      <span class="badge">Segi Empat</span>
+    </div>
+    <div class="card-title">Trapesium</div>
+    <div class="shape-area">
+      <svg width="130" height="90" viewBox="0 0 130 90">
+        <polygon points="30,5 100,5 125,85 5,85" fill="none" stroke="#534AB7" stroke-width="2"/>
+        <line x1="65" y1="5" x2="65" y2="85" stroke="#534AB7" stroke-width="1.2" stroke-dasharray="4 2"/>
+        <rect x="65" y="78" width="7" height="7" fill="none" stroke="#534AB7" stroke-width="1"/>
+        <text x="65" y="-2" text-anchor="middle" font-size="12" fill="#3C3489" font-family="DM Sans">a</text>
+        <text x="65" y="98" text-anchor="middle" font-size="12" fill="#3C3489" font-family="DM Sans">b</text>
+        <text x="74" y="50" font-size="12" fill="#3C3489" font-family="DM Sans">t</text>
+      </svg>
+    </div>
+    <div class="formula-block">
+      <div class="formula-row">
+        <span class="formula-label">Luas</span>
+        <span class="formula-val">L = ½ × (a + b) × t</span>
+      </div>
+      <div class="divider"></div>
+      <div class="formula-row">
+        <span class="formula-label">Keliling</span>
+        <span class="formula-val">K = a + b + c + d</span>
+      </div>
+    </div>
+    <div class="info-text">a,b = sisi sejajar &nbsp;|&nbsp; t = tinggi</div>
+  </div>
+
+  <!-- JAJAR GENJANG -->
+  <div class="card green">
+    <div class="card-header">
+      <span class="badge">Segi Empat</span>
+    </div>
+    <div class="card-title">Jajar Genjang</div>
+    <div class="shape-area">
+      <svg width="130" height="80" viewBox="0 0 130 80">
+        <polygon points="20,5 120,5 110,75 10,75" fill="none" stroke="#3B6D11" stroke-width="2"/>
+        <line x1="65" y1="5" x2="65" y2="75" stroke="#3B6D11" stroke-width="1.2" stroke-dasharray="4 2"/>
+        <rect x="65" y="68" width="7" height="7" fill="none" stroke="#3B6D11" stroke-width="1"/>
+        <text x="65" y="-2" text-anchor="middle" font-size="12" fill="#27500A" font-family="DM Sans">a</text>
+        <text x="74" y="45" font-size="12" fill="#27500A" font-family="DM Sans">t</text>
+      </svg>
+    </div>
+    <div class="formula-block">
+      <div class="formula-row">
+        <span class="formula-label">Luas</span>
+        <span class="formula-val">L = a × t</span>
+      </div>
+      <div class="divider"></div>
+      <div class="formula-row">
+        <span class="formula-label">Keliling</span>
+        <span class="formula-val">K = 2 × (a + b)</span>
+      </div>
+    </div>
+    <div class="info-text">a = alas &nbsp;|&nbsp; t = tinggi &nbsp;|&nbsp; b = sisi miring</div>
+  </div>
+
+  <!-- BELAH KETUPAT -->
+  <div class="card pink">
+    <div class="card-header">
+      <span class="badge">Segi Empat</span>
+    </div>
+    <div class="card-title">Belah Ketupat</div>
+    <div class="shape-area">
+      <svg width="110" height="100" viewBox="0 0 110 100">
+        <polygon points="55,5 105,50 55,95 5,50" fill="none" stroke="#993556" stroke-width="2"/>
+        <line x1="5" y1="50" x2="105" y2="50" stroke="#993556" stroke-width="1.2" stroke-dasharray="4 2"/>
+        <line x1="55" y1="5" x2="55" y2="95" stroke="#993556" stroke-width="1.2" stroke-dasharray="4 2"/>
+        <circle cx="55" cy="50" r="3" fill="#993556"/>
+        <text x="58" y="25" font-size="12" fill="#72243E" font-family="DM Sans">d₁</text>
+        <text x="80" y="47" font-size="12" fill="#72243E" font-family="DM Sans">d₂</text>
+      </svg>
+    </div>
+    <div class="formula-block">
+      <div class="formula-row">
+        <span class="formula-label">Luas</span>
+        <span class="formula-val">L = ½ × d₁ × d₂</span>
+      </div>
+      <div class="divider"></div>
+      <div class="formula-row">
+        <span class="formula-label">Keliling</span>
+        <span class="formula-val">K = 4 × s</span>
+      </div>
+    </div>
+    <div class="info-text">d₁, d₂ = diagonal &nbsp;|&nbsp; s = sisi</div>
+  </div>
+
+  <!-- LAYANG-LAYANG -->
+  <div class="card red">
+    <div class="card-header">
+      <span class="badge">Segi Empat</span>
+    </div>
+    <div class="card-title">Layang-layang</div>
+    <div class="shape-area">
+      <svg width="90" height="110" viewBox="0 0 90 110">
+        <polygon points="45,5 85,55 45,105 5,55" fill="none" stroke="#A32D2D" stroke-width="2"/>
+        <line x1="45" y1="5" x2="45" y2="105" stroke="#A32D2D" stroke-width="1.2" stroke-dasharray="4 2"/>
+        <line x1="5" y1="55" x2="85" y2="55" stroke="#A32D2D" stroke-width="1.2" stroke-dasharray="4 2"/>
+        <circle cx="45" cy="55" r="3" fill="#A32D2D"/>
+        <text x="48" y="28" font-size="12" fill="#791F1F" font-family="DM Sans">d₁</text>
+        <text x="66" y="52" font-size="12" fill="#791F1F" font-family="DM Sans">d₂</text>
+      </svg>
+    </div>
+    <div class="formula-block">
+      <div class="formula-row">
+        <span class="formula-label">Luas</span>
+        <span class="formula-val">L = ½ × d₁ × d₂</span>
+      </div>
+      <div class="divider"></div>
+      <div class="formula-row">
+        <span class="formula-label">Keliling</span>
+        <span class="formula-val">K = 2 × (a + b)</span>
+      </div>
+    </div>
+    <div class="info-text">d₁, d₂ = diagonal &nbsp;|&nbsp; a,b = pasangan sisi</div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Satuan Luas = satuan panjang² &nbsp;&nbsp;|&nbsp;&nbsp; Satuan Keliling = satuan panjang</p>
+  <p style="margin-top:6px">π ≈ 3,14159... &nbsp;|&nbsp; Rumus Matematika Dasar SD &amp; SMP</p>
+</footer>
+
+</body>
+</html>
